@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QuickScript UPI Booster</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1f1f1f, #2c3e50);
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .brand {
+      font-size: 26px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #00ffc3;
+      text-shadow: 0 0 10px #00ffc3;
+    }
+
+    .booster-box {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 30px;
+      width: 90%;
+      max-width: 280px;
+      text-align: center;
+      box-shadow: 0 0 45px rgba(0, 255, 196, 0.2);
+      animation: slideIn 0.7s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(-30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    input[type="text"] {
+      width: 90%;
+      padding: 15px;
+      margin-top: 15px;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
+      background-color: #333;
+      color: #fff;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 25px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      background-color: #00ffc3;
+      color: #000;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #00cfa8;
+    }
+
+    .popup {
+      display: none;
+      background-color: #28a745;
+      color: white;
+      padding: 15px;
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 10px;
+      box-shadow: 0 0 10px #28a745;
+      z-index: 1000;
+    }
+
+    .telegram-link {
+      margin-top: 15px;
+      display: inline-block;
+      background-color: #0088cc;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+
+    .telegram-link:hover {
+      background-color: #0077b3;
+    }
+
+    footer {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="brand">🚀 QuickScript UPI Booster</div>
+
+  <div class="booster-box">
+    <h2>Get ₹2 Instantly 💸</h2>
+    <p>Enter your UPI ID to claim your reward. One time use only.</p>
+    <input type="text" id="upi" placeholder="Enter your UPI ID (e.g. user@upi)" />
+    <button onclick="claimReward()">🎁 Claim ₹2 Now</button>
+    <p id="offer-timer" style="margin-top: 10px; font-weight: bold;"></p>
+    
+    <a class="telegram-link" href="https://t.me/quickscripty" target="_blank">📲 Join Telegram Channel</a>
+  </div>
+  <!-- Add this below your main box -->
+<div id="analyticsBox" style="
+    margin-top: 20px;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
+">
+  <h3 style="margin-bottom: 10px; color: #333;">📊 Booster Stats</h3>
+  <p style="font-size: 18px; font-weight: bold; color: #27ae60;">
+    Total Claims: <span id="claimCount">0</span>
+  </p>
+</div>
+
+  <div class="popup" id="popup">✅ ₹2 Boosted Successfully!</div>
+
+  <footer>Powered by QuickScript | One UPI - One Claim</footer>
+
+  <script>
+  let usedUpis = JSON.parse(localStorage.getItem('usedUpis') || '[]');
+
+  function showPopup(message, success = true) {
+    const popup = document.getElementById('popup');
+    popup.innerText = message;
+    popup.style.backgroundColor = success ? '#28a745' : '#dc3545';
+    popup.style.display = 'block';
+    setTimeout(() => {
+      popup.style.display = 'none';
+      if (success) {
+        window.location.href = "https://t.me/quickscripty"; // redirect after success
+      }
+    }, 5000);
+  }
+
+  function isValidUpi(upi) {
+    return /^[a-zA-Z0-9.\-_]{2,}@[a-zA-Z]{2,}$/.test(upi);
+  }
+
+  function claimReward() {
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinutes = now.getMinutes();
+
+    // ⏰ Offer time: 7:05 AM to 7:10 AM
+    if (!(currentHour === 7 && currentMinutes >= 5 && currentMinutes < 10)) {
+      showPopup("⚠️ Offer is only active from 7:05 AM to 7:10 AM!", false);
+      return;
+    }
+
+    const upi = document.getElementById('upi').value.trim().toLowerCase();
+
+    if (!isValidUpi(upi)) {
+      showPopup("❌ Invalid UPI ID!", false);
+      return;
+    }
+
+    if (usedUpis.includes(upi)) {
+      showPopup("⚠️ This UPI has already claimed!", false);
+      return;
+    }
+
+    usedUpis.push(upi);
+    localStorage.setItem('usedUpis', JSON.stringify(usedUpis));
+
+    // ✅ Show success popup
+    showPopup("✅ UPI Boosted Successfully!");
+    onClaimSuccess();
+  }
+
+  // 🔢 Initialize claim count
+  let claims = localStorage.getItem("claimCount") || 0;
+  document.getElementById("claimCount").innerText = claims;
+
+  function onClaimSuccess() {
+    claims++;
+    localStorage.setItem("claimCount", claims);
+    document.getElementById("claimCount").innerText = claims;
+  }
+
+  // ⏱️ Optional: Auto-disable claim button outside the time range
+  function autoControlClaimButton() {
+    const now = new Date();
+    const btn = document.getElementById('claimBtn');
+    if (now.getHours() === 7 && now.getMinutes() >= 5 && now.getMinutes() < 10) {
+      btn.disabled = false;
+      btn.innerText = "🎁 Claim Now";
+    } else {
+      btn.disabled = true;
+      btn.innerText = "⏰ Offer inactive";
+    }
+  }
+
+  setInterval(autoControlClaimButton, 1000); // check every second
+</script>
+
+</body>
+</html>
