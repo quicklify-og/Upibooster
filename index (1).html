@@ -1,0 +1,647 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QuickScript UPI Booster</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #2d1b69 100%);
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+     /* Animated background particles */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(circle at 20% 80%, rgba(0, 255, 195, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(138, 43, 226, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(255, 20, 147, 0.05) 0%, transparent 50%);
+      animation: float 6s ease-in-out infinite;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(1deg); }
+    }
+
+    .brand {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 30px;
+      background: linear-gradient(45deg, #00ffc3, #00d4ff, #8a2be2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+      letter-spacing: -0.5px;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { filter: drop-shadow(0 0 20px rgba(0, 255, 195, 0.5)); }
+      to { filter: drop-shadow(0 0 30px rgba(0, 212, 255, 0.8)); }
+    }
+
+    .booster-box {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 40px 30px;
+      width: 100%;
+      max-width: 320px;
+      text-align: center;
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 0 60px rgba(0, 255, 195, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      animation: slideInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+
+    .booster-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(0, 255, 195, 0.1), rgba(138, 43, 226, 0.1));
+      border-radius: 24px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .booster-box:hover::before {
+      opacity: 1;
+    }
+
+    @keyframes slideInUp {
+      from { 
+        transform: translateY(60px) scale(0.9); 
+        opacity: 0; 
+      }
+      to { 
+        transform: translateY(0) scale(1); 
+        opacity: 1; 
+      }
+    }
+
+    .booster-box h2 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      background: linear-gradient(45deg, #fff, #00ffc3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .booster-box p {
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.5;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      font-size: 16px;
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    input[type="text"]:focus {
+      border-color: #00ffc3;
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 20px rgba(0, 255, 195, 0.2);
+    }
+
+    input[type="text"]::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    button {
+      width: 100%;
+      padding: 16px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #00ffc3, #00d4ff);
+      color: #000;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s;
+    }
+
+    button:hover::before {
+      left: 100%;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 255, 195, 0.4);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    button:disabled {
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.5);
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    #offer-timer {
+      margin: 16px 0;
+      font-weight: 600;
+      color: #00ffc3;
+      font-size: 14px;
+    }
+
+    .telegram-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 20px;
+      background: linear-gradient(135deg, #0088cc, #006bb3);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+
+    .telegram-link:hover {
+      background: linear-gradient(135deg, #006bb3, #0088cc);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(0, 136, 204, 0.3);
+    }
+
+    #analyticsBox {
+      margin-top: 24px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 16px;
+      text-align: center;
+      animation: fadeInUp 1s ease 0.3s both;
+    }
+
+    #analyticsBox h3 {
+      margin: 0 0 12px 0;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    #analyticsBox p {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+      color: #00ffc3;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .popup {
+      display: none;
+      padding: 16px 24px;
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 12px;
+      font-weight: 500;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      animation: popupSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes popupSlide {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px) scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0) scale(1);
+      }
+    }
+
+    .popup.success {
+      background: rgba(40, 167, 69, 0.9);
+      color: white;
+      box-shadow: 0 8px 32px rgba(40, 167, 69, 0.3);
+    }
+
+    .popup.error {
+      background: rgba(220, 53, 69, 0.9);
+      color: white;
+      box-shadow: 0 8px 32px rgba(220, 53, 69, 0.3);
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.5);
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    /* Responsive design */
+    @media (max-width: 480px) {
+      .brand {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      .booster-box {
+        padding: 30px 20px;
+        margin: 0 10px;
+      }
+
+      .booster-box h2 {
+        font-size: 20px;
+      }
+    }
+
+    /* Loading animation for button */
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading::after {
+      content: '';
+      width: 16px;
+      height: 16px;
+      margin-left: 8px;
+      border: 2px solid transparent;
+      border-top: 2px solid currentColor;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="brand">🚀 QuickScript UPI Booster</div>
+
+  <div class="booster-box">
+    <h2>Get UpiCash Instantly 💸</h2>
+    <p>Enter your UPI ID to claim your reward. One time use only.</p>
+    <input type="text" id="upi" placeholder="Enter your UPI ID (e.g. user@upi)" />
+    <button id="claimBtn" onclick="claimReward()">🎁 Claim ₹2 Now</button>
+    <p id="offer-timer"></p>
+
+    <p id="next-offer-countdown" style="color: #ccc; font-size: 13px;"></p>
+    
+    <!-- Admin Controls -->
+    <button id="adminBtn" onclick="showAdminPanel()" style="background: linear-gradient(135deg, #ff6b6b, #ee5a24); margin-top: 15px; font-size: 14px; padding: 12px;">
+      🔑 Admin: Activate Offer
+    </button>
+    
+    <div id="adminPanel" style="display: none; margin-top: 15px; padding: 15px; background: rgba(255, 107, 107, 0.1); border-radius: 10px; border: 1px solid rgba(255, 107, 107, 0.3);">
+      <input type="password" id="adminPassword" placeholder="Enter admin password" style="margin-bottom: 10px;" />
+      <button onclick="activateSpecialOffer()" style="background: linear-gradient(135deg, #00b894, #00a085); font-size: 14px;">
+        ⚡ Activate 2-Minute Offer
+      </button>
+    </div>
+    
+    <div id="specialOfferTimer" style="display: none; margin-top: 15px; padding: 15px; background: rgba(0, 255, 195, 0.1); border-radius: 10px; border: 1px solid rgba(0, 255, 195, 0.3);">
+      <h4 style="margin: 0 0 10px 0; color: #00ffc3;">🔥 Special Offer Active!</h4>
+      <p style="margin: 0; font-size: 16px; font-weight: bold; color: #00ffc3;" id="specialCountdown">2:00</p>
+    </div>
+    
+    <a class="telegram-link" href="https://t.me/quickscripty" target="_blank">
+      📲 Join Telegram Channel
+    </a>
+  </div>
+
+  <div id="analyticsBox">
+    <h3>📊 Booster Stats</h3>
+    <p>Total Claims: <span id="claimCount">0</span></p>
+  </div>
+
+  <div class="popup" id="popup"></div>
+
+  <footer>Powered by QuickScript | One UPI - One Claim</footer>
+
+  <script>
+  let usedUpis = JSON.parse(localStorage.getItem('usedUpis') || '[]');
+  let specialOfferActive = false;
+  let specialOfferEndTime = null;
+
+  function showPopup(message, success = true) {
+    const popup = document.getElementById('popup');
+    popup.innerText = message;
+    popup.className = `popup ${success ? 'success' : 'error'}`;
+    popup.style.display = 'block';
+    setTimeout(() => {
+      popup.style.display = 'none';
+      if (success) {
+        window.location.href = "https://t.me/quickscripty";
+      }
+    }, 5000);
+  }
+
+  function showAdminPanel() {
+    const panel = document.getElementById('adminPanel');
+    panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+  }
+
+  function activateSpecialOffer() {
+    const password = document.getElementById('adminPassword').value;
+    
+    const formData = new FormData();
+    formData.append('action', 'activate');
+    formData.append('password', password);
+    
+    fetch('claim.php', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        specialOfferActive = true;
+        specialOfferEndTime = data.endTime * 1000; // Convert to milliseconds
+        
+        document.getElementById('adminPanel').style.display = 'none';
+        document.getElementById('specialOfferTimer').style.display = 'block';
+        document.getElementById('adminPassword').value = '';
+        
+        showPopup("✅ Special offer activated for 2 minutes for ALL users!", true);
+        updateSpecialOfferCountdown();
+      } else {
+        showPopup("❌ " + data.message, false);
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      showPopup("❌ Server error!", false);
+    });
+  }
+
+  function checkSpecialOfferStatus() {
+    fetch('claim.php?action=checkspecial')
+      .then(response => response.json())
+      .then(data => {
+        if (data.active) {
+          specialOfferActive = true;
+          specialOfferEndTime = data.endTime * 1000; // Convert to milliseconds
+          document.getElementById('specialOfferTimer').style.display = 'block';
+          updateSpecialOfferCountdown();
+        } else {
+          specialOfferActive = false;
+          specialOfferEndTime = null;
+          document.getElementById('specialOfferTimer').style.display = 'none';
+        }
+      })
+      .catch(error => {
+        console.error('Error checking special offer:', error);
+      });
+  }
+
+  function updateSpecialOfferCountdown() {
+    if (!specialOfferActive) return;
+    
+    const now = new Date().getTime();
+    const timeLeft = specialOfferEndTime - now;
+    
+    if (timeLeft <= 0) {
+      // Offer expired
+      specialOfferActive = false;
+      specialOfferEndTime = null;
+      document.getElementById('specialOfferTimer').style.display = 'none';
+      
+      return;
+    }
+    
+    // Calculate minutes and seconds
+    const minutes = Math.floor(timeLeft / (1000 * 60));
+    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+    
+    document.getElementById('specialCountdown').innerText = 
+      `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    
+    setTimeout(updateSpecialOfferCountdown, 1000);
+  }
+   // Check special offer status on page load
+     checkSpecialOfferStatus();
+
+  function isValidUpi(upi) {
+    return /^[a-zA-Z0-9.\-_]{2,}@[a-zA-Z]{2,}$/.test(upi);
+  }
+ // Check special offer status every 5 seconds
+   setInterval(() => {
+       checkSpecialOfferStatus();
+           autoControlClaimButton();
+             }, 5000);
+             
+
+  function claimReward() {
+    const btn = document.getElementById('claimBtn');
+   btn.classList.add('loading');
+    btn.disabled = true;
+    
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinutes = now.getMinutes();
+
+    // ⏰ Check if offer is active (regular time OR special admin activation)
+    const regularTimeActive = (currentHour === 7 && currentMinutes >= 5 && currentMinutes < 10);
+    const specialOfferStillActive = specialOfferActive && new Date().getTime() < specialOfferEndTime;
+    
+    if (!regularTimeActive && !specialOfferStillActive) {
+      showPopup("⚠️ Offer is only active from 7:05 AM to 7:10 AM or during special activation!", false);
+      btn.classList.remove('loading');
+      btn.disabled = false;
+      return;
+    }
+
+    const upi = document.getElementById('upi').value.trim().toLowerCase();
+
+    if (!isValidUpi(upi)) {
+      showPopup("❌ Invalid UPI ID!", false);
+      btn.classList.remove('loading');
+      btn.disabled = false;
+      return;
+    }
+
+    // Send UPI to server for validation and claiming
+    const formData = new FormData();
+    formData.append('upi', upi);
+    
+    fetch('claim.php', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.text())
+    .then(result => {
+      btn.classList.remove('loading');
+      btn.disabled = false;
+      
+      if (result === 'success') {
+        // Store locally only for UI purposes
+        usedUpis.push(upi);
+        localStorage.setItem('usedUpis', JSON.stringify(usedUpis));
+        showPopup("✅ UPI Boosted Successfully!");
+        onClaimSuccess();
+      } else if (result === 'already') {
+        showPopup("⚠️ This UPI has already claimed!", false);
+      } else {
+        showPopup("❌ Invalid UPI ID!", false);
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      btn.classList.remove('loading');
+      btn.disabled = false;
+      showPopup("❌ Server error!", false);
+    });
+  }
+  }
+
+  // 🔢 Initialize claim count from server
+  let claims = 0;
+  
+  function updateClaimCount() {
+    fetch('claim.php?action=getcount')
+      .then(response => response.text())
+      .then(count => {
+        claims = parseInt(count) || 0;
+        document.getElementById("claimCount").innerText = claims;
+      })
+      .catch(error => {
+        console.error('Error fetching claim count:', error);
+      });
+  }
+
+  function onClaimSuccess() {
+    updateClaimCount(); // Fetch updated count from server
+  }
+
+  // Load initial count when page loads
+  updateClaimCount();
+
+  // ⏱️ Auto-disable claim button outside the time range
+  function autoControlClaimButton() {
+    const now = new Date();
+    const btn = document.getElementById('claimBtn');
+    const regularTimeActive = (now.getHours() === 7 && now.getMinutes() >= 5 && now.getMinutes() < 10);
+    const specialOfferStillActive = specialOfferActive && now.getTime() < specialOfferEndTime;
+    
+    if (regularTimeActive || specialOfferStillActive) {
+      if (!btn.classList.contains('loading')) {
+        btn.disabled = false;
+        btn.innerText = "🎁 Claim ₹2 Now";
+      }
+    } else {
+      if (!btn.classList.contains('loading')) {
+        btn.disabled = true;
+        btn.innerText = "⏰ Offer inactive";
+      }
+    }
+  }
+
+  setInterval(autoControlClaimButton, 1000);
+  setInterval(autoControlClaimButton, 1000);
+    function updateCountdown() {
+      const countdownEl = document.getElementById("next-offer-countdown");
+        const now = new Date();
+          const currentHour = now.getHours();
+            const currentMinutes = now.getMinutes();
+
+              // If within active period (7:05 - 7:10), hide countdown
+                if (currentHour === 7 && currentMinutes >= 5 && currentMinutes < 10) {
+                    countdownEl.innerText = "";
+                        return;
+                          }
+
+                            // Set target to next 7:05 AM
+                              let target = new Date();
+                                target.setHours(7, 5, 0, 0);
+
+                                  // If past today's 7:05 AM, set target to tomorrow
+                                    if (now >= target) {
+                                        target.setDate(target.getDate() + 1);
+                                          }
+
+                                            const diff = target - now;
+
+                                              const hours = Math.floor(diff / (1000 * 60 * 60));
+                                                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                                                  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                                                    countdownEl.innerText = `Offer starting in 7:05AM: ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                                                    }
+
+                                                    // 🔁 Call both autoControlClaimButton + updateCountdown every second
+                                                    setInterval(() => {
+                                                      autoControlClaimButton();
+                                                        updateCountdown();
+                                                        }, 1000);
+</script>
+
+</body>
+</html>
